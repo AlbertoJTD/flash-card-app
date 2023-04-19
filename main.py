@@ -9,7 +9,6 @@ data = pandas.read_csv('data/french_words.csv')
 data = data.to_dict(orient='records')
 
 def next_card():
-    global data
     new_word = random.choice(data)
     canvas.itemconfig(card_title, text=list(new_word.keys())[0])
     canvas.itemconfig(card_word, text=new_word['French'])
