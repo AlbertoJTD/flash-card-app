@@ -2,28 +2,44 @@ from tkinter import *
 import pandas
 import random
 
+# ---------------------------- CONSTANTS ------------------------------- #
 BACKGROUND_COLOR = "#B1DDC6"
 
 # ---------------------------- GET A NEW WORD ------------------------------- #
 data = pandas.read_csv('data/french_words.csv')
 data = data.to_dict(orient='records')
+current_card = {}
 
 def next_card():
-    new_word = random.choice(data)
-    canvas.itemconfig(card_title, text=list(new_word.keys())[0])
-    canvas.itemconfig(card_word, text=new_word['French'])
+    global current_card, flip_timer
+    window.after_cancel(flip_timer)
+    current_card = random.choice(data)
+    canvas.itemconfig(card_title, text=list(current_card.keys())[0], fill='black')
+    canvas.itemconfig(card_word, text=current_card['French'], fill='black')
+    window.after(3000, flip_card)
+    canvas.itemconfig(background, image=card_front_image)
+
+
+# ---------------------------- FLIP THE CARD ------------------------------- #
+def flip_card():
+    canvas.itemconfig(card_title, text=list(current_card.keys())[1], fill='white')
+    canvas.itemconfig(card_word, text=current_card['English'], fill='white')
+    canvas.itemconfig(background, image=card_back_image)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Flash Card")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
+flip_timer = window.after(3000, flip_card)
 
 # Add image to the background
 canvas = Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
-image = PhotoImage(file="images/card_front.png")
-canvas.create_image(400, 263, image=image)
 
+card_front_image = PhotoImage(file="images/card_front.png")
+card_back_image = PhotoImage(file="images/card_back.png")
+
+background = canvas.create_image(400, 263, image=card_front_image)
 card_title = canvas.create_text(400, 150, text='Title', font=('Ariel', 40, 'italic'))
 card_word = canvas.create_text(400, 263, text='Word', font=('Ariel', 60, 'bold'))
 
