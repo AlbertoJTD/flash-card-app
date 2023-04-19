@@ -9,6 +9,12 @@ This is a flash card game to learn new words in other languages, this game curre
 For now, if you want to change the language, change the `french_words.csv` file to `english_words.csv`.
 
 ## How it works
+_Before you used the app, install [pandas](https://pandas.pydata.org/)_
+```python
+pip install pandas
+```
+
+
 The words will be displayed randomly and after 3 seconds the word will be displayed in the second language, for example if the word is in French, after the mentioned time the word will be displayed in English
 
 At the bottom you have 2 buttons, one with a cross `❌` and one with a check mark `✅`:
